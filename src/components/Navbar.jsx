@@ -6,12 +6,14 @@ import {
   Button,
   Box,
   IconButton,
+  Select,
+  MenuItem,
   useTheme
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 
-const Navbar = ({ toggleColorMode }) => {
+const Navbar = ({ currentTheme, setThemeName }) => {
   const theme = useTheme();
   const location = useLocation();
 
@@ -33,8 +35,8 @@ const Navbar = ({ toggleColorMode }) => {
     <AppBar
       position="static"
       sx={{
-        bgcolor: '#1976d2',
-        color: '#fff',
+        bgcolor: theme.palette.primary.main,
+        color: theme.palette.getContrastText(theme.palette.primary.main),
         boxShadow: 'none',
         borderBottom: `1px solid ${theme.palette.divider}`,
       }}
@@ -68,11 +70,23 @@ const Navbar = ({ toggleColorMode }) => {
             </Button>
           ))}
 
+          <Select
+            size="small"
+            value={currentTheme}
+            onChange={(e) => setThemeName(e.target.value)}
+            sx={{ color: 'inherit', borderColor: 'inherit', ml: 2 }}
+          >
+            <MenuItem value="light">Light</MenuItem>
+            <MenuItem value="dark">Dark</MenuItem>
+            <MenuItem value="coffee">Coffee</MenuItem>
+            <MenuItem value="sunset">Sunset</MenuItem>
+            <MenuItem value="ocean">Ocean</MenuItem>
+          </Select>
+
           <IconButton
-            onClick={toggleColorMode}
+            onClick={() => setThemeName(currentTheme === 'dark' ? 'light' : 'dark')}
             color="inherit"
             aria-label="toggle theme"
-            sx={{ ml: 1 }}
           >
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
